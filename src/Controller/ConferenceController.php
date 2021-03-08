@@ -17,19 +17,24 @@ class ConferenceController extends AbstractController
      * @var Environment
      */
     private $twig;
+    /**
+     * @var ConferenceRepository
+     */
+    private $conferenceRepository;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, ConferenceRepository $conferenceRepository)
     {
         $this->twig = $twig;
+        $this->conferenceRepository = $conferenceRepository;
     }
 
     /**
      * @Route("/", name="homepage")
      */
-    public function index(ConferenceRepository $conferenceRepository): Response
+    public function index(): Response
     {
         return new Response($this->twig->render('conference/index.html.twig', [
-            'conferences' => $conferenceRepository->findAll(),
+            'conferences' => $this->conferenceRepository->findAll(),
         ]));
     }
 
